@@ -31,18 +31,28 @@ if __name__ == '__main__':
 
     if function == "generate_key_pair":
         # Generate key pair
-        save_key_pair(PRIVATE_KEY_PATH, PUBLIC_KEY_PATH)
+        private_key, public_key = generate_key_pair()
         print("Key pair generated and saved.")
 
     if function == "share_public_key":
+        private_key, public_key = sys.argv[2], sys.argv[3]
+
         # Share public key
-        public_key = load_key_pair(PUBLIC_KEY_PATH)[1]
-        share_public_key(public_key)
+        shared_key = share_public_key(private_key, public_key)
         print("Public key shared.")
 
+    if function == "generate_session_key":
+        private_key, public_shared_key = sys.argv[2], sys.argv[3]
+
+        # Generate session key
+        session_key = generate_session_key(private_key, public_shared_key)
+        print("Session key:", session_key)
+
     if function == "save_key_pair":
+        private_key, public_key = sys.argv[2], sys.argv[3]
+
         # Save key pair
-        save_key_pair(PRIVATE_KEY_PATH, PUBLIC_KEY_PATH)
+        save_key_pair(PRIVATE_KEY_PATH, PUBLIC_KEY_PATH, private_key, public_key)
         print("Key pair saved.")
 
     if function == "load_key_pair":
@@ -51,25 +61,17 @@ if __name__ == '__main__':
         print("Key pair loaded.")
 
     if function == "encrypt":
+        session_key, iv, data = sys.argv[2], sys.argv[3], sys.argv[4]
+
         # Perform encryption
-        plaintext = input("Enter the plaintext to encrypt: ")
-        iv = generate_iv()
-        ciphertext = encrypt_data(plaintext, iv)
-        print("Ciphertext:", ciphertext)
+        ciphertext = encrypt_data(session_key, iv, data)
+        print("Data encrypted.")
 
     if function == "decrypt":
-        # Perform decryption
-        ciphertext = input("Enter the ciphertext to decrypt: ")
-        iv = input("Enter the initialization vector (IV): ")
-        plaintext = decrypt_data(ciphertext, iv)
-        return plaintext
-    else:
-        print("Invalid function.")
-    
+        session_key, iv, data = sys.argv[2], sys.argv[3], sys.argv[4]
 
-    if function == "generate_session_key":
-        # Generate session key
-        session_key = generate_session_key()
-        print("Session key:", session_key)
+        # Perform decryption
+        plaintext = decrypt_data(session_key, iv, data)
+        print("Data decrypted.")
     else:
         print("Invalid function.")

@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 
 # Functions
-def encrypt_data(session_key, data, iv):
+def encrypt_data(session_key, iv, data):
     """
     Encrypts the given data using the AES algorithm.
 
@@ -25,7 +25,7 @@ def encrypt_data(session_key, data, iv):
     return encrypted_data
 
 
-def decrypt_data(session_key, encrypted_data, iv):
+def decrypt_data(session_key, iv, encrypted_data):
     """
     Decrypts the given encrypted data using the provided session key and initialization vector (IV).
 

@@ -30,15 +30,12 @@ def generate_key_pair():
     return private_key, public_key
 
 
-def share_public_key(public_key):
+def share_public_key(private_key, public_key):
     """
     Shares the public key with another peer.
     """
     # When connecting to another par, share the public key.
-    return public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
+    return private_key.exchange(public_key)
 
 
 def generate_shared_key(private_key, public_shared_key):
